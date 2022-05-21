@@ -1,4 +1,4 @@
-import { ListarTagRequest } from 'src/api/tags/requests/ListarTagRequest';
+import { ListarTagRequest } from 'src/api/tags/requests/listar-tag.request';
 import { Request } from 'src/shared/api/requests/request';
 import { Formulario } from 'src/shared/formularios/formulario';
 

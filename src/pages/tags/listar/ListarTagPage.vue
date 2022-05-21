@@ -42,6 +42,7 @@ import { defineComponent, reactive } from 'vue';
 import Breadcrumb from 'src/components/Breadcrumb.vue';
 import { breadcrumpItens } from 'src/pages/tags/listar/listar-tag.breadcrump';
 import { ListarFiltroFormulario } from 'src/pages/tags/listar/formularios/listar-filtro.formulario';
+import { TagService } from 'src/api/tags/services/tag.service';
 
 export default defineComponent({
   components: {
@@ -49,8 +50,11 @@ export default defineComponent({
   },
   setup() {
     const formulario = reactive(new ListarFiltroFormulario({}));
-    const pesquisar = () => {
-      formulario.gerarRequest();
+
+    const pesquisar = async () => {
+      const tagService = new TagService();
+      const request = formulario.gerarRequest();
+      tagService.listar(request);
     };
 
     return { breadcrumpItens, formulario, pesquisar };
