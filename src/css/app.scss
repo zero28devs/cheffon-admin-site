@@ -1,10 +1,32 @@
 // app global css in SCSS form
 .drawer-menu {
-    .img-logo {
-        margin: 20px 0;
-    }
+  .img-logo {
+    margin: 20px 0;
+  }
+}
+
+.breadcrumb {
+  margin-top: 20px;
+  width: 95%;
 }
 
 .card-filtro {
-    width: 95%;
+  width: 95%;
+  margin: 30px 0;
+
+  .campos-filtro {
+    margin: 30px 0;
+  }
+
+  .botoes-filtro {
+    margin-top: 10px;
+
+    .botao-pesquisar {
+      margin-left: 5px;
+    }
+  }
+}
+
+.card-dados {
+  width: 95%;
 }

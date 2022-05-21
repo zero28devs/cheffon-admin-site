@@ -10,8 +10,6 @@
           aria-label="Menu"
           @click="toggleMenuDrawer"
         />
-
-        <q-toolbar-title> Cheffon</q-toolbar-title>
       </q-toolbar>
     </q-header>
 
