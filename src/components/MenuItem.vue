@@ -1,9 +1,8 @@
 <template>
   <q-item clickable tag="a" :href="link">
-    <q-item-section v-if="icone" avatar>
+    <q-item-section avatar>
       <q-icon color="primary" :name="icone" />
     </q-item-section>
-
     <q-item-section>
       <q-item-label>{{ titulo }}</q-item-label>
       <q-item-label caption>{{ legenda }}</q-item-label>

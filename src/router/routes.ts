@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        component: () => import('src/pages/tags/ListarTagPage.vue'),
+        component: () => import('src/pages/tags/listar/ListarTagPage.vue'),
       },
     ],
   },

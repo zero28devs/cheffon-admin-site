@@ -15,10 +15,20 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="drawerOpen" show-if-above bordered>
+    <q-drawer
+      class="drawer-menu column"
+      v-model="drawerOpen"
+      show-if-above
+      bordered
+    >
+      <q-img
+        src="../assets/logo-menu.svg"
+        :ratio="16 / 9"
+        class="img-logo self-center mt-2"
+        style="height: 90px; max-width: 192px"
+        header
+      />
       <q-list>
-        <q-item-label header>Menu</q-item-label>
-
         <MenuItem
           v-for="link in configuracoesMenu"
           :key="link.titulo"
