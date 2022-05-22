@@ -1,6 +1,6 @@
 import { BreadcumpItem } from 'src/components/types/breadcump-item';
 
-export const breadcrumpItens: BreadcumpItem[] = [
+export const listarTagsBreadcrump: BreadcumpItem[] = [
   {
     nome: 'Início',
     icone: 'home',

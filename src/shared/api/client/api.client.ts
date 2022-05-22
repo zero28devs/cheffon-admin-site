@@ -14,7 +14,8 @@ export default class ApiClient {
       const response = await this.client.get<T>(url, params);
       return response.data;
     } catch (error) {
-      return this.tratarErro(error);
+      this.emitirMensagemErro('Erro ao processar requisição');
+      throw error;
     }
   }
 
@@ -23,7 +24,8 @@ export default class ApiClient {
       const response = await this.client.post<T>(url, body, params);
       return response.data;
     } catch (error) {
-      return this.tratarErro(error);
+      this.emitirMensagemErro('Erro ao processar requisição');
+      throw error;
     }
   }
 
@@ -32,7 +34,8 @@ export default class ApiClient {
       const response = await this.client.put<T>(url, body, params);
       return response.data;
     } catch (error) {
-      return this.tratarErro(error);
+      this.emitirMensagemErro('Erro ao processar requisição');
+      throw error;
     }
   }
 
@@ -41,19 +44,17 @@ export default class ApiClient {
       const response = await this.client.delete<T>(url, params);
       return response.data;
     } catch (error) {
-      return this.tratarErro(error);
+      console.table(error);
+      this.emitirMensagemErro('Erro ao processar requisição');
+      throw error;
     }
-  }
-
-  private tratarErro(error: unknown) {
-    this.emitirMensagemErro('Erro ao processar requisição');
-    return Promise.reject(error);
   }
 
   private emitirMensagemErro(mensagem: string) {
     Notify.create({
       message: mensagem,
       type: 'negative',
+      position: 'top-right',
     });
   }
 }

@@ -64,7 +64,7 @@ module.exports = configure(function (ctx) {
       // publicPath: '/',
       // analyze: true,
       env: {
-        API: ctx.dev ? 'localhost:8080' : 'https://api.cheffon.com',
+        API: ctx.dev ? 'http://localhost:8080' : 'https://api.cheffon.com',
       },
       // rawDefine: {}
       // ignorePublicFolder: true,
