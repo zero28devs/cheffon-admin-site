@@ -8,6 +8,6 @@ export abstract class PaginacaoRequest extends Request {
   constructor(paginacao: PaginacaoGrid) {
     super();
     this.page = paginacao.page;
-    this.perPage = paginacao.rowsNumber;
+    this.perPage = paginacao.rowsPerPage;
   }
 }

@@ -32,13 +32,15 @@
     <q-card flat bordered class="card-dados mt-2">
       <q-card-section>
         <div class="text-h6 text-dark">Tags</div>
-        <q-table
-          class="tabela-dados"
-          :pagination="paginacao"
-          :rows="tags"
-          :columns="grid"
-          row-key="name"
-        />
+        <div class="tabela-dados">
+          <q-table
+            :loading="loading"
+            :rows="tags"
+            :columns="grid"
+            :paginacao="paginacao"
+            row-key="id"
+          />
+        </div>
       </q-card-section>
     </q-card>
   </q-page>
@@ -51,8 +53,9 @@ import { TagService } from 'src/api/tags/services/tag.service';
 import { listarTagsBreadcrump } from 'src/pages/tags/listar/listar-tag.breadcrump';
 import { ListarTagFiltroFormulario } from 'src/pages/tags/listar/formularios/listar-tag-filtro.formulario';
 import { ListarTagGrid } from 'src/pages/tags/listar/grids/listar-tag.grid';
-import { PaginacaoGrid } from 'src/shared/grids/paginacao.grid';
+import { PaginacaoPadraoGrid } from 'src/shared/grids/paginacao-padrao.grid';
 import { TagResponse } from 'src/api/tags/responses/tag.response';
+import { PaginacaoResponse } from 'src/shared/api/responses/paginacao.response';
 
 export default defineComponent({
   components: {
@@ -61,25 +64,32 @@ export default defineComponent({
   setup() {
     const formulario = ref(new ListarTagFiltroFormulario({}));
     const grid = ListarTagGrid;
-    const paginacao = ref(new PaginacaoGrid({}));
+    const loading = ref(false);
+
+    const paginacaoGrid = PaginacaoPadraoGrid;
     const tags = ref<TagResponse[]>([]);
 
+    const toggleLoading = () => (loading.value = !loading.value);
+
     const pesquisar = async () => {
+      toggleLoading();
       const tagService = new TagService();
-      const request = formulario.value.gerarRequest(paginacao.value);
-      return await tagService.listar(request);
+      const request = formulario.value.gerarRequest(paginacaoGrid);
+      const resposta = await tagService.listar(request);
+      tags.value = resposta.content;
+      toggleLoading();
     };
 
     onMounted(async () => {
-      const resposta = await pesquisar();
-      tags.value = resposta.content;
+      await pesquisar();
     });
 
     return {
       listarTagsBreadcrump,
       formulario,
       grid,
-      paginacao,
+      loading,
+      paginacaoGrid,
       pesquisar,
       tags,
     };

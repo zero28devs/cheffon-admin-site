@@ -16,6 +16,10 @@ const routes: RouteRecordRaw[] = [
         path: '',
         component: () => import('src/pages/tags/listar/ListarTagPage.vue'),
       },
+      {
+        path: 'editar',
+        component: () => import('src/pages/tags/listar/EditarTagPage.vue'),
+      },
     ],
   },
   // Always leave this as last one,
