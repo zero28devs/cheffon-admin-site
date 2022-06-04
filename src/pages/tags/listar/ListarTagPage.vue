@@ -18,7 +18,12 @@
       <q-separator inset />
       <q-card-section class="q-pt-none row justify-end">
         <div class="botoes-filtro">
-          <q-btn no-caps color="secondary" label="Limpar campos"></q-btn>
+          <q-btn
+            no-caps
+            color="dark"
+            label="Limpar campos"
+            @click="limparFormulario"
+          ></q-btn>
           <q-btn
             class="botao-pesquisar"
             no-caps
@@ -32,13 +37,38 @@
     <q-card flat bordered class="card-dados mt-2">
       <q-card-section>
         <div class="text-h6 text-dark">Tags</div>
+        <div class="botoes-acoes">
+          <q-btn
+            no-caps
+            color="primary"
+            label="Cadastrar"
+            @click="navegarParaCadastro"
+          ></q-btn>
+          <q-btn
+            v-if="registroSelecionado"
+            no-caps
+            color="secondary"
+            label="Editar"
+            @click="navegarParaEdicao"
+          ></q-btn>
+          <q-btn
+            v-if="registroSelecionado"
+            no-caps
+            color="negative"
+            label="Remover"
+          ></q-btn>
+        </div>
         <div class="tabela-dados">
           <q-table
+            @request="pesquisar"
+            v-model:selected="tagSelecionada"
+            v-model:pagination="paginacaoGrid"
             :loading="loading"
             :rows="tags"
             :columns="grid"
-            :paginacao="paginacao"
             row-key="id"
+            selection="single"
+            flat
           />
         </div>
       </q-card-section>
@@ -47,7 +77,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
+import router from 'src/router';
 import Breadcrumb from 'src/components/Breadcrumb.vue';
 import { TagService } from 'src/api/tags/services/tag.service';
 import { listarTagsBreadcrump } from 'src/pages/tags/listar/listar-tag.breadcrump';
@@ -55,7 +86,7 @@ import { ListarTagFiltroFormulario } from 'src/pages/tags/listar/formularios/lis
 import { ListarTagGrid } from 'src/pages/tags/listar/grids/listar-tag.grid';
 import { PaginacaoPadraoGrid } from 'src/shared/grids/paginacao-padrao.grid';
 import { TagResponse } from 'src/api/tags/responses/tag.response';
-import { PaginacaoResponse } from 'src/shared/api/responses/paginacao.response';
+import { PaginacaoGrid } from 'src/shared/grids/paginacao.grid';
 
 export default defineComponent({
   components: {
@@ -65,23 +96,41 @@ export default defineComponent({
     const formulario = ref(new ListarTagFiltroFormulario({}));
     const grid = ListarTagGrid;
     const loading = ref(false);
+    const tagSelecionada = ref();
 
-    const paginacaoGrid = PaginacaoPadraoGrid;
+    const paginacaoGrid = ref(PaginacaoPadraoGrid);
     const tags = ref<TagResponse[]>([]);
+
+    const registroSelecionado = computed(() => tagSelecionada);
 
     const toggleLoading = () => (loading.value = !loading.value);
 
-    const pesquisar = async () => {
+    const limparFormulario = () =>
+      (formulario.value = new ListarTagFiltroFormulario({}));
+
+    const pesquisar = async (props: { pagination: PaginacaoGrid }) => {
       toggleLoading();
       const tagService = new TagService();
-      const request = formulario.value.gerarRequest(paginacaoGrid);
+      const request = formulario.value.gerarRequest(props.pagination);
       const resposta = await tagService.listar(request);
       tags.value = resposta.content;
+
+      paginacaoGrid.value.page = resposta.number + 1;
+      paginacaoGrid.value.rowsPerPage = resposta.size;
+      paginacaoGrid.value.rowsNumber = resposta.totalElements;
+
       toggleLoading();
     };
 
+    const navegarParaCadastro = () => router.push('/tags/cadastrar');
+
+    const navegarParaEdicao = async () => {
+      const tagEdicao = tagSelecionada.value as TagResponse;
+      router.push(`/tags/editar/${tagEdicao.id}`);
+    };
+
     onMounted(async () => {
-      await pesquisar();
+      await pesquisar({ pagination: PaginacaoPadraoGrid });
     });
 
     return {
@@ -90,8 +139,13 @@ export default defineComponent({
       grid,
       loading,
       paginacaoGrid,
-      pesquisar,
       tags,
+      tagSelecionada,
+      registroSelecionado,
+      limparFormulario,
+      pesquisar,
+      navegarParaCadastro,
+      navegarParaEdicao,
     };
   },
 });

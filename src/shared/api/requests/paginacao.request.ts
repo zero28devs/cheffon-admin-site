@@ -3,11 +3,12 @@ import { PaginacaoGrid } from 'src/shared/grids/paginacao.grid';
 
 export abstract class PaginacaoRequest extends Request {
   page?: number;
-  perPage?: number;
+  size?: number;
 
   constructor(paginacao: PaginacaoGrid) {
     super();
-    this.page = paginacao.page;
-    this.perPage = paginacao.rowsPerPage;
+    const paginaApi = paginacao.page - 1;
+    this.page = paginaApi;
+    this.size = paginacao.rowsPerPage;
   }
 }
