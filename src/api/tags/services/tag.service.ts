@@ -11,9 +11,13 @@ export class TagService {
     this.apiClient = new ApiClient();
   }
 
-  async listar(request: ListarTagRequest) {
-    return await this.apiClient.get<PaginacaoResponse<TagResponse>>(this.url, {
+  listar(request: ListarTagRequest) {
+    return this.apiClient.get<PaginacaoResponse<TagResponse>>(this.url, {
       params: request,
     });
+  }
+
+  excluir(codigo: number) {
+    return this.apiClient.delete<void>(`${this.url}/${codigo}`);
   }
 }

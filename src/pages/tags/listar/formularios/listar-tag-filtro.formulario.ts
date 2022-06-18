@@ -11,7 +11,6 @@ export class ListarTagFiltroFormulario implements Formulario {
   }
 
   gerarRequest(paginacao: PaginacaoGrid): Request {
-    console.log(paginacao);
     return new ListarTagRequest(
       {
         nome: this.nome,

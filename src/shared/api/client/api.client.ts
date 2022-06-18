@@ -9,7 +9,7 @@ export default class ApiClient {
     this.client = api;
   }
 
-  async get<T>(url: string, params: AxiosRequestConfig) {
+  async get<T>(url: string, params: AxiosRequestConfig = {}) {
     try {
       const response = await this.client.get<T>(url, params);
       return response.data;
@@ -19,7 +19,7 @@ export default class ApiClient {
     }
   }
 
-  async post<T>(url: string, body: unknown, params: AxiosRequestConfig) {
+  async post<T>(url: string, body: unknown, params: AxiosRequestConfig = {}) {
     try {
       const response = await this.client.post<T>(url, body, params);
       return response.data;
@@ -29,7 +29,7 @@ export default class ApiClient {
     }
   }
 
-  async put<T>(url: string, body: unknown, params: AxiosRequestConfig) {
+  async put<T>(url: string, body: unknown, params: AxiosRequestConfig = {}) {
     try {
       const response = await this.client.put<T>(url, body, params);
       return response.data;
@@ -39,12 +39,12 @@ export default class ApiClient {
     }
   }
 
-  async delete<T>(url: string, params: AxiosRequestConfig) {
+  async delete<T>(url: string, params: AxiosRequestConfig = {}) {
     try {
       const response = await this.client.delete<T>(url, params);
       return response.data;
     } catch (error) {
-      console.table(error);
+      console.log('teste');
       this.emitirMensagemErro('Erro ao processar requisição');
       throw error;
     }
